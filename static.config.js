@@ -4,21 +4,21 @@ const klaw = require('klaw')
 const marked = require('marked');
 const path = require('path')
 const matter = require('gray-matter');
+const moment = require('moment');
 
+function getPosts() {
+  const items = []
 
-      // Walk ("klaw") through posts directory and push file paths into posts array //
+  // Filter function to retrieve .md files //
 
-      // Filter function to retrieve .md files //
+  let filterFn = function (item) {
+    return path.extname(item) === ".md";
+  }
 
+  // Walk ("klaw") through posts directory and push file paths into posts array //
 
-    function getPosts() {
-      const items = []    
-      
-      let filterFn = function (item) {
-        return path.extname(item) === ".md";
-      }
-
-      return new Promise(resolve => { klaw('./src/posts')
+  return new Promise(resolve => {
+    klaw('./src/posts')
       .on('data', item => {
         if (filterFn(item.path)) {
           // If markdown file, read contents //
@@ -26,16 +26,18 @@ const matter = require('gray-matter');
           // Convert to frontmatter object and markdown content //
           let dataObj = matter(data)
           dataObj.content = marked(dataObj.content)
-          // Create slug for URL //
+          // Create slug for URL, date and title //
           dataObj.data.slug = dataObj.data.title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '')
+          dataObj.data.thumbnail = dataObj.data.thumbnail.replace('/src', '..')
+          // console.log(dataObj)
           items.push(dataObj)
         }
       })
       .on('end', () => {
-       resolve(items)         
+        resolve(items)
       })
-    })
-  }
+  })
+}
 
 
 
@@ -48,7 +50,6 @@ export default {
   getRoutes: async () => {
 
     var posts = await getPosts()
-    console.log(posts)
 
     return [
       {
