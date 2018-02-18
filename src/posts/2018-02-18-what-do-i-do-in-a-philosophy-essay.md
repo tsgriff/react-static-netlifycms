@@ -2,7 +2,7 @@
 layout: blog
 title: What To Do In A Philosophy Essay
 date: 2018-02-18T20:45:21.018Z
-thumbnail: /src/images/uploads/image2.jpg
+thumbnail: /src/images/uploads/image.jpg
 rating: '5'
 ---
 \#2
