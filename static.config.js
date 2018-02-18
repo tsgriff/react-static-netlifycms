@@ -3,48 +3,37 @@ const fs = require('fs');
 const klaw = require('klaw')
 const marked = require('marked');
 const path = require('path')
-
-// Filter function to retrieve .md files //
-
-let filterFn = function(item) {
-  return path.extname(item) === ".md";
-}
-
-// Walk (klaw) through posts directory and push file paths into items array //
-const items = []
-klaw('./src/posts')
-  .on('readable', function () {
-    let item
-    while ((item = this.read())) {
-      if (filterFn(item.path)) {
-        items.push(item.path)        
-      }
-    }
-  })
-  .on('error', (err, item) => {
-    console.log(err.message)
-    console.log(item.path) // the file the error occurred on
-  })
-  .on('end', () => {
-    // Loop through items array and read each post //
-    for (let post of items ) {
-      try {  
-        var data = fs.readFileSync(post, 'utf8');
-        console.log(data);    
-      } catch(e) {
-        console.log('Error:', e.stack);
-      }
-    }
-  }) 
-
-
+const matter = require('gray-matter');
 
 export default {
   getSiteData: () => ({
     title: 'React Static with Netlify CMS',
   }),
   getRoutes: async () => {
-    const { data: posts } = await axios.get('https://jsonplaceholder.typicode.com/posts')
+
+      // Walk ("klaw") through posts directory and push file paths into posts array //
+
+      // Filter function to retrieve .md files //
+      let filterFn = function (item) {
+        return path.extname(item) === ".md";
+      }
+
+      const posts = []
+
+      await klaw('./src/posts')
+        .on('data', item => {
+          if (filterFn(item.path)) {
+            // If markdown file, read contents //
+            let data = fs.readFileSync(item.path, 'utf8')
+            // Convert to frontmatter object and markdown content //
+            let dataObj = matter(data)
+            dataObj.content = marked(dataObj.content)
+            // Create slug for URL //
+            dataObj.data.slug = dataObj.data.title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '')
+            posts.push(dataObj)
+          }
+        })
+
     return [
       {
         path: '/',
@@ -61,7 +50,7 @@ export default {
           posts,
         }),
         children: posts.map(post => ({
-          path: `/post/${post.id}`,
+          path: `/post/${post.data.slug}`,
           component: 'src/containers/Post',
           getData: () => ({
             post,

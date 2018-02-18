@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "gray-matter": "^3.1.1",
     "klaw": "^2.1.1",
     "marked": "^0.3.12",
     "react": "^16.0.0",
