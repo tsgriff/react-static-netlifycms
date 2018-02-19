@@ -6,8 +6,6 @@ React-Static Basic template with added configuration for blog post deployment vi
 
 [Information on authentication and logging into Netlify CMS](https://www.netlifycms.org/docs/add-to-your-site/#authentication)
 
-## React-Static GitHub Repository and Documentation
 [React-Static](https://github.com/nozzle/react-static)
 
-## Netlify CMS GitHub Repository and Documentation
 [Netlify CMS](https://github.com/netlify/netlify-cms.git)
