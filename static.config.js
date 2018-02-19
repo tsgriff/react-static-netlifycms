@@ -28,7 +28,7 @@ function getPosts() {
           dataObj.content = marked(dataObj.content)
           // Create slug for URL, date and title //
           dataObj.data.slug = dataObj.data.title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '')
-          dataObj.data.thumbnail = dataObj.data.thumbnail.replace('/src', '..')
+          dataObj.data.thumbnail = dataObj.data.thumbnail.replace('/src/images/uploads/', '')
           // console.log(dataObj)
           items.push(dataObj)
         }

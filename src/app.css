@@ -31,3 +31,8 @@ nav a {
 .content {
   padding: 1rem;
 }
+
+.image {
+  height: 100px;
+  width: 100px;
+}
