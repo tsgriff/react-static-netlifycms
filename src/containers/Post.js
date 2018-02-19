@@ -5,7 +5,7 @@ import Moment from 'react-moment';
 
 export default withRouteData(({ post }) => {
   return (
-    <div>
+    <div className="blog-post">
       <Link to="/blog/">{'<'} Back</Link>
       <br />
       <h3>{post.data.title}</h3>

@@ -31,8 +31,13 @@ nav a {
 .content {
   padding: 1rem;
 }
-
 .image {
-  height: 100px;
-  width: 100px;
+  width: 25%;
+  min-width: 250px;
+  height: auto;
+}
+
+.blog-post {
+ display: flex;
+ flex-direction: column;
 }

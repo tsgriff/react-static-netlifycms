@@ -18,27 +18,39 @@ function getPosts() {
   // Walk ("klaw") through posts directory and push file paths into posts array //
 
   return new Promise(resolve => {
-    klaw('./src/posts')
-      .on('data', item => {
-        if (filterFn(item.path)) {
+    // Check if posts directory exists //
+    if (fs.existsSync('./src/posts')) {
+      klaw('./src/posts')
+        .on('data', item => {
           // If markdown file, read contents //
-          let data = fs.readFileSync(item.path, 'utf8')
-          // Convert to frontmatter object and markdown content //
-          let dataObj = matter(data)
-          dataObj.content = marked(dataObj.content)
-          // Create slug for URL, date and title //
-          dataObj.data.slug = dataObj.data.title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '')
-          dataObj.data.thumbnail = dataObj.data.thumbnail.replace('/src/images/uploads/', '')
-          // console.log(dataObj)
-          items.push(dataObj)
-        }
-      })
-      .on('end', () => {
-        resolve(items)
-      })
+          if (filterFn(item.path)) {
+            let data = fs.readFileSync(item.path, 'utf8')
+            // Convert to frontmatter object and markdown content //
+            let dataObj = matter(data)
+            dataObj.content = marked(dataObj.content)
+            // Create slug for URL //
+            dataObj.data.slug = dataObj.data.title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '')
+            // Parse image file name from path //
+            dataObj.data.thumbnail = dataObj.data.thumbnail.replace('/src/images/uploads/', '')
+            // Push object into items array //
+            items.push(dataObj)
+          }
+        })
+        .on('error', e => {
+          console.log(e)
+        })
+        .on('end', () => {
+          // Resolve promise for async getRoutes request //
+          // posts = items for below routes //
+          resolve(items)
+        })
+    }
+    // If src/posts directory doesn't exist, return items as empty array //
+    else {
+      resolve(items)
+    }
   })
 }
-
 
 
 export default {

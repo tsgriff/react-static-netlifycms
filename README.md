@@ -1,10 +1,13 @@
-# React-Static - Basic Example
+# React-Static with Netlify CMS | Starter App
 
-This example is the most basic version of react-static available. It includes:
-- Babel
-- CSS imports
-- Image imports
-- File imports
-- Automatic Routing
+React-Static Basic template with added configuration for blog post deployment via Netlify CMS and GitHub.
 
-To get started, run `react-static create` and use the `basic` template.
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/tsgriff/react-static-netlifycms.git)
+
+[Information on authentication and logging into Netlify CMS](https://www.netlifycms.org/docs/add-to-your-site/#authentication)
+
+## React-Static GitHub Repository and Documentation
+[React-Static](https://github.com/nozzle/react-static)
+
+## Netlify CMS GitHub Repository and Documentation
+[Netlify CMS](https://github.com/netlify/netlify-cms.git)
